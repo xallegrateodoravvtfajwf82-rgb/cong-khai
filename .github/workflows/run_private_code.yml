@@ -1,11 +1,7 @@
 name: run-private-code
 
 on:
-  schedule:
-    # 12:00 Asia/Bangkok (UTC+7) → 05:00 UTC
-    - cron: "0 0 * * *"
-    # 18:00 Asia/Bangkok (UTC+7) → 11:00 UTC
-    - cron: "0 10 * * *"
+  
   workflow_dispatch: {}
 
 
