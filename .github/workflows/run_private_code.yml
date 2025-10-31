@@ -46,7 +46,7 @@ jobs:
       - name: Resolve parameters (support schedule without inputs)
         id: params
         run: |
-          repo="${{ inputs.private_repo }}"; [ -z "$repo" ] && repo="xallegrateodoravvtfajwf82-rgb/rieng-tu"; echo "repo=$repo" >> "$GITHUB_OUTPUT"
+          repo="${{ inputs.private_repo }}"; [ -z "$repo" ] && repo="colfleshjadein2404997-oss/tesst-mc"; echo "repo=$repo" >> "$GITHUB_OUTPUT"
           ref="${{ inputs.private_ref }}";   [ -z "$ref" ] && ref="main";                                           echo "ref=$ref"   >> "$GITHUB_OUTPUT"
           wd="${{ inputs.workdir }}";        [ -z "$wd" ]  && wd=".";                                               echo "workdir=$wd" >> "$GITHUB_OUTPUT"
           privacy="${{ inputs.youtube_privacy }}"; [ -z "$privacy" ] && privacy="public";                           echo "privacy=$privacy" >> "$GITHUB_OUTPUT"
@@ -147,6 +147,19 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('private-src/**/requirements*.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+      - name: Install Python libs
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          # Libs ảnh / video phụ trợ
+          python -m pip install pillow opencv-python-headless numpy gdown imageio-ffmpeg
+          # Google API (nếu upload YouTube)
+          python -m pip install google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib
+          # Torch CPU + Torchaudio (đúng index CPU)
+          python -m pip install "torch==2.3.1" "torchaudio==2.3.1" --index-url https://download.pytorch.org/whl/cpu
+          # Whisper (gói đúng tên: openai-whisper)
+          python -m pip install "openai-whisper==20231117"
+          # Kiểm tra import (dùng python -c để tránh lỗi YAML here-doc)
+          python -c "import sys; import whisper, torch, torchaudio; print('Whisper/Torch OK:', whisper.__version__, torch.__version__)"
 
       - name: Install Python deps
         run: |
